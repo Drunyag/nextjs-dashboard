@@ -1,4 +1,5 @@
 import { Revenue } from './definitions';
+import {State} from "@/app/lib/actions";
 
 export const formatCurrency = (amount: number) => {
   return (amount / 100).toLocaleString('en-US', {
@@ -66,4 +67,13 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     '...',
     totalPages,
   ];
+};
+export const ensureFormDataFieldTs = (
+    key: keyof State['values'], // Указываем, что key может быть только одним из ключей State['values']
+    formData: FormData,
+    prevValues: Partial<State['values']>
+) => {
+  if (!formData.get(key) && prevValues?.[key]) {
+    formData.set(key, prevValues[key] as string);
+  }
 };
